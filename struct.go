@@ -235,7 +235,6 @@ type NodeStatsProcessResponse struct {
 
 type NodeStatsHttpResponse struct {
 	TotalOpened int64 `json:"total_opened"`
-	CurrentOpen int64 `json:"current_open"`
 }
 
 type NodeStatsProcessMemResponse struct {

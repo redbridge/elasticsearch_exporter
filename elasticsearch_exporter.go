@@ -41,7 +41,6 @@ var (
 		"process_mem_virtual_size_bytes":          "Total virtual memory used in bytes",
 		"process_open_files_count":                "Open file descriptors",
 		"process_max_files_count":                 "Max file descriptors for process",
-		"http_open":                               "HTTP connections open",
 	}
 	counterMetrics = map[string]string{
 		"indices_fielddata_evictions":           "Evictions from field data",
@@ -64,6 +63,10 @@ var (
 		"indices_refresh_total":                 "Total refreshes",
 		"indices_refresh_total_time_ms_total":   "Total time spent refreshing",
 		"http_open_total":                       "Total HTTP connections opened",
+		"indices_search_query_total":            "Total query calls",
+		"indices_search_query_time_ms_total":    "Cumulative query time in milliseconds",
+		"indices_search_fetch_total":            "Total fetch calls",
+		"indices_search_fetch_time_ms_total":    "Cumulative fetch time in milliseconds",
 	}
 	counterVecMetrics = map[string]*VecInfo{
 		"jvm_gc_collection_seconds_count": &VecInfo{
@@ -373,9 +376,14 @@ func (e *Exporter) Collect(ch chan<- prometheus.Metric) {
 		e.counters["indices_refresh_total_time_ms_total"].WithLabelValues(allStats.ClusterName, stats.Host).Set(float64(stats.Indices.Refresh.TotalTime))
 		e.counters["indices_refresh_total"].WithLabelValues(allStats.ClusterName, stats.Host).Set(float64(stats.Indices.Refresh.Total))
 
+		e.counters["indices_search_query_time_ms_total"].WithLabelValues(allStats.ClusterName, stats.Host).Set(float64(stats.Indices.Search.QueryTime))
+		e.counters["indices_search_query_total"].WithLabelValues(allStats.ClusterName, stats.Host).Set(float64(stats.Indices.Search.QueryTotal))
+
+		e.counters["indices_search_fetch_time_ms_total"].WithLabelValues(allStats.ClusterName, stats.Host).Set(float64(stats.Indices.Search.FetchTime))
+		e.counters["indices_search_fetch_total"].WithLabelValues(allStats.ClusterName, stats.Host).Set(float64(stats.Indices.Search.FetchTotal))
+
 		// HTTP Stats
 		e.counters["http_open_total"].WithLabelValues(allStats.ClusterName, stats.Host).Set(float64(stats.Http.TotalOpened))
-		e.gauges["http_open"].WithLabelValues(allStats.ClusterName, stats.Host).Set(float64(stats.Http.CurrentOpen))
 
 		// Transport Stats
 		e.counters["transport_rx_packets_total"].WithLabelValues(allStats.ClusterName, stats.Host).Set(float64(stats.Transport.RxCount))
