@@ -25,79 +25,188 @@ type VecInfo struct {
 }
 
 var (
-	gaugeMetrics = map[string]string{
-		"indices_fielddata_memory_size_bytes":     "Field data cache memory usage in bytes",
-		"indices_filter_cache_memory_size_bytes":  "Filter cache memory usage in bytes",
-		"indices_query_cache_memory_size_bytes":   "Query cache memory usage in bytes",
-		"indices_request_cache_memory_size_bytes": "Request cache memory usage in bytes",
-		"indices_docs":                            "Count of documents on this node",
-		"indices_docs_deleted":                    "Count of deleted documents on this node",
-		"indices_store_size_bytes":                "Current size of stored index data in bytes",
-		"indices_segments_memory_bytes":           "Current memory size of segments in bytes",
-		"indices_segments_count":                  "Count of index segments on this node",
-		"process_cpu_percent":                     "Percent CPU used by process",
-		"process_mem_resident_size_bytes":         "Resident memory in use by process in bytes",
-		"process_mem_share_size_bytes":            "Shared memory in use by process in bytes",
-		"process_mem_virtual_size_bytes":          "Total virtual memory used in bytes",
-		"process_open_files_count":                "Open file descriptors",
-		"process_max_files_count":                 "Max file descriptors for process",
-	}
-	counterMetrics = map[string]string{
-		"indices_fielddata_evictions":           "Evictions from field data",
-		"indices_filter_cache_evictions":        "Evictions from filter cache",
-		"indices_query_cache_evictions":         "Evictions from query cache",
-		"indices_request_cache_evictions":       "Evictions from request cache",
-		"indices_flush_total":                   "Total flushes",
-		"indices_flush_time_ms_total":           "Cumulative flush time in milliseconds",
-		"transport_rx_packets_total":            "Count of packets received",
-		"transport_rx_size_bytes_total":         "Total number of bytes received",
-		"transport_tx_packets_total":            "Count of packets sent",
-		"transport_tx_size_bytes_total":         "Total number of bytes sent",
-		"indices_store_throttle_time_ms_total":  "Throttle time for index store in milliseconds",
-		"indices_indexing_index_total":          "Total index calls",
-		"indices_indexing_index_time_ms_total":  "Cumulative index time in milliseconds",
-		"indices_indexing_delete_total": 	 "Total indexing deletes",
-		"indices_indexing_delete_time_ms_total": "Total time indexing delete in milliseconds",
-		"indices_merges_total":                  "Total merges",
-		//
-		"indices_merges_docs_total":             "Cumulative docs merged",
-		"indices_merges_total_size_bytes_total": "Total merge size in bytes",
-		"indices_merges_total_time_ms_total":    "Total time spent merging in milliseconds",
-		"indices_refresh_total":                 "Total refreshes",
-		"indices_refresh_time_ms_total":         "Total time spent refreshing",
-		// your changes
-		"indices_get_time_ms":			 "Total get time in milliseconds",
-		"indices_get_total":		 	 "Total get",
-		"indices_get_missing_time_ms": 		 "Total time of get missing in milliseconds",
-		"indices_get_missing_total": 	 	 "Total get missing",
-		"indices_get_exists_time_ms": 		 "Total time get exists in milliseconds",
-		"indices_get_exists_total": 	 	 "Total get exists operations",
-		"indices_search_query_time_ms": 	 "Total search query time in milliseconds",
-		"indices_search_query_total":	 	 "Total search queries",
-		"indices_search_fetch_time_ms": 	 "Total search fetch time in milliseconds",
-		"indices_search_fetch_total": 		 "Total search fetches",
-		"indices_translog_operations": 	 	 "Total translog operations",
-		"indices_translog_size_in_bytes": 	 "Total translog size in bytes",
-
-	}
-	counterVecMetrics = map[string]*VecInfo{
-		"jvm_gc_collection_seconds_count": &VecInfo{
+	counterMetrics = map[string]*VecInfo{
+		"indices_fielddata_evictions": &VecInfo{
+			help:   "Evictions from field data",
+			labels: []string{"cluster", "node"},
+		},
+		"indices_filter_cache_evictions": &VecInfo{
+			help:   "Evictions from filter cache",
+			labels: []string{"cluster", "node"},
+		},
+		"indices_query_cache_evictions": &VecInfo{
+			help:   "Evictions from query cache",
+			labels: []string{"cluster", "node"},
+		},
+		"indices_request_cache_evictions": &VecInfo{
+			help:   "Evictions from request cache",
+			labels: []string{"cluster", "node"},
+		},
+		"indices_fielddata_hit_count": &VecInfo{
+			help:   "Hit count of field data",
+			labels: []string{"cluster", "node"},
+		},
+		"indices_filter_cache_hit_count": &VecInfo{
+			help:   "Hit count of filter cache",
+			labels: []string{"cluster", "node"},
+		},
+		"indices_query_cache_hit_count": &VecInfo{
+			help:   "Hit count of query cache",
+			labels: []string{"cluster", "node"},
+		},
+		"indices_request_cache_hit_count": &VecInfo{
+			help:   "Hit count of request cache",
+			labels: []string{"cluster", "node"},
+		},
+		"indices_fielddata_total_count": &VecInfo{
+			help:   "Total request count of field data",
+			labels: []string{"cluster", "node"},
+		},
+		"indices_filter_cache_total_count": &VecInfo{
+			help:   "Total request count of filter cache",
+			labels: []string{"cluster", "node"},
+		},
+		"indices_query_cache_total_count": &VecInfo{
+			help:   "Total request count of query cache",
+			labels: []string{"cluster", "node"},
+		},
+		"indices_request_cache_total_count": &VecInfo{
+			help:   "Total request count of request cache",
+			labels: []string{"cluster", "node"},
+		},
+		"indices_flush_total": &VecInfo{
+			help:   "Total flushes",
+			labels: []string{"cluster", "node"},
+		},
+		"indices_flush_time_ms_total": &VecInfo{
+			help:   "Cumulative flush time in milliseconds",
+			labels: []string{"cluster", "node"},
+		},
+		"transport_rx_packets_total": &VecInfo{
+			help:   "Count of packets received",
+			labels: []string{"cluster", "node"},
+		},
+		"transport_rx_size_bytes_total": &VecInfo{
+			help:   "Total number of bytes received",
+			labels: []string{"cluster", "node"},
+		},
+		"transport_tx_packets_total": &VecInfo{
+			help:   "Count of packets sent",
+			labels: []string{"cluster", "node"},
+		},
+		"transport_tx_size_bytes_total": &VecInfo{
+			help:   "Total number of bytes sent",
+			labels: []string{"cluster", "node"},
+		},
+		"indices_store_throttle_time_ms_total": &VecInfo{
+			help:   "Throttle time for index store in milliseconds",
+			labels: []string{"cluster", "node"},
+		},
+		"indices_indexing_index_total": &VecInfo{
+			help:   "Total index calls",
+			labels: []string{"cluster", "node"},
+		},
+		"indices_indexing_index_time_ms_total": &VecInfo{
+			help:   "Cumulative index time in milliseconds",
+			labels: []string{"cluster", "node"},
+		},
+		"indices_merges_total": &VecInfo{
+			help:   "Total merges",
+			labels: []string{"cluster", "node"},
+		},
+		"indices_merges_docs_total": &VecInfo{
+			help:   "Cumulative docs merged",
+			labels: []string{"cluster", "node"},
+		},
+		"indices_merges_size_bytes_total": &VecInfo{
+			help:   "Total merge size in bytes",
+			labels: []string{"cluster", "node"},
+		},
+		"indices_merges_time_ms_total": &VecInfo{
+			help:   "Total time spent merging in milliseconds",
+			labels: []string{"cluster", "node"},
+		},
+		"indices_refresh_total": &VecInfo{
+			help:   "Total refreshes",
+			labels: []string{"cluster", "node"},
+		},
+		"indices_refresh_time_ms_total": &VecInfo{
+			help:   "Total time spent refreshing",
+			labels: []string{"cluster", "node"},
+		},
+		"indices_indexing_delete_total": &VecInfo{
+			help: "Total indexing deletes",
+			labels: []string{"cluster", "node"},
+		},
+		"indices_indexing_delete_time_ms_total": &VecInfo{
+			help: "Total time indexing delete in milliseconds",
+			labels: []string{"cluster", "node"},
+		},
+		"indices_get_time_ms":           &VecInfo{
+			help: "Total get time in milliseconds",
+			labels: []string{"cluster", "node"},
+		},
+		"indices_get_total":          &VecInfo{
+			help:"Total get",
+			labels: []string{"cluster", "node"},
+		},
+		"indices_get_missing_time_ms":        &VecInfo{
+			help:"Total time of get missing in milliseconds",
+			labels: []string{"cluster", "node"},
+		},
+		"indices_get_missing_total":             &VecInfo{
+			help:"Total get missing",
+			labels: []string{"cluster", "node"},
+		},
+		"indices_get_exists_time_ms":            &VecInfo{
+			help:"Total time get exists in milliseconds",
+			labels: []string{"cluster", "node"},
+		},
+		"indices_get_exists_total":           &VecInfo{
+			help:"Total get exists operations",
+			labels: []string{"cluster", "node"},
+		},
+		"indices_search_query_time_ms":          &VecInfo{
+			help: "Total search query time in milliseconds",
+			labels: []string{"cluster", "node"},
+		},
+		"indices_search_query_total":            &VecInfo{
+			help: "Total search queries",
+			labels: []string{"cluster", "node"},
+		},
+		"indices_search_fetch_time_ms":          &VecInfo{
+			help: "Total search fetch time in milliseconds",
+			labels: []string{"cluster", "node"},
+		},
+		"indices_search_fetch_total":            &VecInfo{
+			help: "Total search fetches",
+			labels: []string{"cluster", "node"},
+		},
+		"indices_translog_operations":           &VecInfo{
+			help: "Total translog operations",
+			labels: []string{"cluster", "node"},
+		},
+		"indices_translog_size_in_bytes":        &VecInfo{
+			help: "Total translog size in bytes",
+			labels: []string{"cluster", "node"},
+		},
+		"jvm_gc_collection_seconds_count": 	 &VecInfo{
 			help:   "Count of JVM GC runs",
 			labels: []string{"cluster", "node", "gc"},
 		},
-		"jvm_gc_collection_seconds_sum": &VecInfo{
+		"jvm_gc_collection_seconds_sum": 	 &VecInfo{
 			help:   "GC run time in seconds",
 			labels: []string{"cluster", "node", "gc"},
 		},
-		"process_cpu_time_seconds_sum": &VecInfo{
+		"process_cpu_time_seconds_sum": 	 &VecInfo{
 			help:   "Process CPU time in seconds",
 			labels: []string{"cluster", "node", "type"},
 		},
-		"thread_pool_completed_count": &VecInfo{
+		"thread_pool_completed_count": 	 	 &VecInfo{
 			help:   "Thread Pool operations completed",
 			labels: []string{"cluster", "node", "type"},
 		},
-		"thread_pool_rejected_count": &VecInfo{
+		"thread_pool_rejected_count": 		 &VecInfo{
 			help:   "Thread Pool operations rejected",
 			labels: []string{"cluster", "node", "type"},
 		},
@@ -118,6 +227,22 @@ var (
 		},
 		"indices_request_cache_memory_size_bytes": &VecInfo{
 			help:   "Request cache memory usage in bytes",
+			labels: []string{"cluster", "node"},
+		},
+		"indices_fielddata_cache_size": &VecInfo{
+			help:   "Field data cache size",
+			labels: []string{"cluster", "node"},
+		},
+		"indices_filter_cache_cache_size": &VecInfo{
+			help:   "Filter cache size",
+			labels: []string{"cluster", "node"},
+		},
+		"indices_query_cache_cache_size": &VecInfo{
+			help:   "Query cache size",
+			labels: []string{"cluster", "node"},
+		},
+		"indices_request_cache_cache_size": &VecInfo{
+			help:   "Request cache size",
 			labels: []string{"cluster", "node"},
 		},
 		"indices_docs": &VecInfo{
@@ -386,16 +511,28 @@ func (e *Exporter) CollectNodesStats() {
 
 		// Indices Stats
 		e.gauges["indices_fielddata_memory_size_bytes"].WithLabelValues(allStats.ClusterName, stats.Host).Set(float64(stats.Indices.FieldData.MemorySize))
+		e.gauges["indices_fielddata_cache_size"].WithLabelValues(allStats.ClusterName, stats.Host).Set(float64(stats.Indices.FieldData.CacheSize))
 		e.counters["indices_fielddata_evictions"].WithLabelValues(allStats.ClusterName, stats.Host).Set(float64(stats.Indices.FieldData.Evictions))
+		e.counters["indices_fielddata_hit_count"].WithLabelValues(allStats.ClusterName, stats.Host).Set(float64(stats.Indices.FieldData.HitCount))
+		e.counters["indices_fielddata_total_count"].WithLabelValues(allStats.ClusterName, stats.Host).Set(float64(stats.Indices.FieldData.TotalCount))
 
 		e.gauges["indices_filter_cache_memory_size_bytes"].WithLabelValues(allStats.ClusterName, stats.Host).Set(float64(stats.Indices.FilterCache.MemorySize))
+		e.gauges["indices_filter_cache_cache_size"].WithLabelValues(allStats.ClusterName, stats.Host).Set(float64(stats.Indices.FilterCache.CacheSize))
 		e.counters["indices_filter_cache_evictions"].WithLabelValues(allStats.ClusterName, stats.Host).Set(float64(stats.Indices.FilterCache.Evictions))
+		e.counters["indices_filter_cache_hit_count"].WithLabelValues(allStats.ClusterName, stats.Host).Set(float64(stats.Indices.FilterCache.HitCount))
+		e.counters["indices_filter_cache_total_count"].WithLabelValues(allStats.ClusterName, stats.Host).Set(float64(stats.Indices.FilterCache.TotalCount))
 
 		e.gauges["indices_query_cache_memory_size_bytes"].WithLabelValues(allStats.ClusterName, stats.Host).Set(float64(stats.Indices.QueryCache.MemorySize))
+		e.gauges["indices_query_cache_cache_size"].WithLabelValues(allStats.ClusterName, stats.Host).Set(float64(stats.Indices.QueryCache.CacheSize))
 		e.counters["indices_query_cache_evictions"].WithLabelValues(allStats.ClusterName, stats.Host).Set(float64(stats.Indices.QueryCache.Evictions))
+		e.counters["indices_query_cache_hit_count"].WithLabelValues(allStats.ClusterName, stats.Host).Set(float64(stats.Indices.QueryCache.HitCount))
+		e.counters["indices_query_cache_total_count"].WithLabelValues(allStats.ClusterName, stats.Host).Set(float64(stats.Indices.QueryCache.TotalCount))
 
 		e.gauges["indices_request_cache_memory_size_bytes"].WithLabelValues(allStats.ClusterName, stats.Host).Set(float64(stats.Indices.RequestCache.MemorySize))
+		e.gauges["indices_request_cache_cache_size"].WithLabelValues(allStats.ClusterName, stats.Host).Set(float64(stats.Indices.RequestCache.CacheSize))
 		e.counters["indices_request_cache_evictions"].WithLabelValues(allStats.ClusterName, stats.Host).Set(float64(stats.Indices.RequestCache.Evictions))
+		e.counters["indices_request_cache_hit_count"].WithLabelValues(allStats.ClusterName, stats.Host).Set(float64(stats.Indices.RequestCache.HitCount))
+		e.counters["indices_request_cache_total_count"].WithLabelValues(allStats.ClusterName, stats.Host).Set(float64(stats.Indices.RequestCache.TotalCount))
 
 		e.counters["indices_translog_operations"].WithLabelValues(allStats.ClusterName, stats.Host).Set(float64(stats.Indices.Translog.Operations))
 		e.counters["indices_translog_size_in_bytes"].WithLabelValues(allStats.ClusterName, stats.Host).Set(float64(stats.Indices.Translog.Size))
@@ -433,8 +570,8 @@ func (e *Exporter) CollectNodesStats() {
 		e.counters["indices_indexing_delete_time_ms_total"].WithLabelValues(allStats.ClusterName, stats.Host).Set(float64(stats.Indices.Indexing.DeleteTime))
 		e.counters["indices_indexing_delete_total"].WithLabelValues(allStats.ClusterName, stats.Host).Set(float64(stats.Indices.Indexing.DeleteTotal))
 
-		e.counters["indices_merges_total_time_ms_total"].WithLabelValues(allStats.ClusterName, stats.Host).Set(float64(stats.Indices.Merges.TotalTime))
-		e.counters["indices_merges_total_size_bytes_total"].WithLabelValues(allStats.ClusterName, stats.Host).Set(float64(stats.Indices.Merges.TotalSize))
+		e.counters["indices_merges_time_ms_total"].WithLabelValues(allStats.ClusterName, stats.Host).Set(float64(stats.Indices.Merges.TotalTime))
+		e.counters["indices_merges_size_bytes_total"].WithLabelValues(allStats.ClusterName, stats.Host).Set(float64(stats.Indices.Merges.TotalSize))
 		e.counters["indices_merges_total"].WithLabelValues(allStats.ClusterName, stats.Host).Set(float64(stats.Indices.Merges.Total))
 		e.counters["indices_merges_docs_total"].WithLabelValues(allStats.ClusterName, stats.Host).Set(float64(stats.Indices.Merges.TotalDocs))
 
