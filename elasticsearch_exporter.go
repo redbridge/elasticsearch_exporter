@@ -210,6 +210,11 @@ var (
 			help:   "Thread Pool operations rejected",
 			labels: []string{"cluster", "node", "type"},
 		},
+		"http_open_total":                       &VecInfo{
+			help:    "Total HTTP connections opened",
+			labels: []string{"cluster", "node"},
+		},
+
 	}
 
 	gaugeMetrics = map[string]*VecInfo{
@@ -300,6 +305,10 @@ var (
 		"breakers_limit_size_bytes": &VecInfo{
 			help:   "Limit size in bytes for breaker",
 			labels: []string{"cluster", "node", "breaker"},
+		},
+		"breakers_tripped": &VecInfo{
+			help:   "Has the breaker been tripped?",
+			labels: []string{"breaker"},
 		},
 		"jvm_memory_committed_bytes": &VecInfo{
 			help:   "JVM memory currently committed by area",
@@ -600,6 +609,9 @@ func (e *Exporter) CollectNodesStats() {
 		e.counters["process_cpu_time_seconds_sum"].WithLabelValues(allStats.ClusterName, stats.Host, "user").Set(float64(stats.Process.CPU.User / 1000))
 
 		e.gauges["os_mem_used_percent"].WithLabelValues(allStats.ClusterName, stats.Host).Set(float64(stats.OS.Mem.UsedPercent))
+		// HTTP Stats
+		e.counters["http_open_total"].WithLabelValues(allStats.ClusterName, stats.Host, stats.Name).Set(float64(stats.Http.TotalOpened))
+
 	}
 }
 

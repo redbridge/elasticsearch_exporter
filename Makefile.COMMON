@@ -48,7 +48,7 @@ ifeq ($(GOOS),darwin)
 	RELEASE_SUFFIX ?= -osx$(shell sw_vers -productVersion)
 endif
 
-GO_VERSION ?= 1.4.2
+GO_VERSION ?= 1.6
 
 ifeq ($(shell type go >/dev/null && go version | sed 's/.*go\([0-9.]*\).*/\1/'), $(GO_VERSION))
 	GOROOT := $(shell go env GOROOT)
@@ -57,7 +57,7 @@ else
 endif
 
 GOURL      ?= https://golang.org/dl
-GOPKG      ?= go$(GO_VERSION).$(GOOS)-$(GOARCH)$(RELEASE_SUFFIX).tar.gz
+GOPKG      ?= go$(GO_VERSION).$(GOOS)-$(GOARCH).tar.gz
 GOPATH     := $(CURDIR)/.build/gopath
 GOCC       ?= $(GOROOT)/bin/go
 GO         ?= GOROOT=$(GOROOT) GOPATH=$(GOPATH) $(GOCC)
