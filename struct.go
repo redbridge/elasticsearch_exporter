@@ -41,7 +41,7 @@ type NodeStatsNodeResponse struct {
 	Breakers         map[string]NodeStatsBreakersResponse       `json:"breakers"`
 	Transport        NodeStatsTransportResponse                 `json:"transport"`
 	Process          NodeStatsProcessResponse                   `json:"process"`
-	Http             NodeStatsHttpResponse                      `json:"http"`
+	Http             NodeStatsHTTPResponse                      `json:"http"`
 }
 
 type NodeStatsBreakersResponse struct {
@@ -255,10 +255,6 @@ type NodeStatsProcessResponse struct {
 	MaxFD     int64                       `json:"max_file_descriptors"`
 	CPU       NodeStatsProcessCPUResponse `json:"cpu"`
 	Memory    NodeStatsProcessMemResponse `json:"mem"`
-}
-
-type NodeStatsHttpResponse struct {
-	TotalOpened int64 `json:"total_opened"`
 }
 
 type NodeStatsProcessMemResponse struct {

@@ -370,6 +370,10 @@ var (
 			help:   "Number of unassigned shards",
 			labels: []string{"cluster", "index"},
 		},
+		"http_open":                       &VecInfo{
+			help:    "Current HTTP connections opened",
+			labels: []string{"cluster", "node"},
+		},
 	}
 )
 
@@ -610,7 +614,8 @@ func (e *Exporter) CollectNodesStats() {
 
 		e.gauges["os_mem_used_percent"].WithLabelValues(allStats.ClusterName, stats.Host).Set(float64(stats.OS.Mem.UsedPercent))
 		// HTTP Stats
-		e.counters["http_open_total"].WithLabelValues(allStats.ClusterName, stats.Host, stats.Name).Set(float64(stats.Http.TotalOpened))
+		e.counters["http_open_total"].WithLabelValues(allStats.ClusterName, stats.Host).Set(float64(stats.Http.TotalOpen))
+		e.gauges["http_open"].WithLabelValues(allStats.ClusterName, stats.Host).Set(float64(stats.Http.CurrentOpen))
 
 	}
 }
