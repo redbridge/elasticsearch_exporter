@@ -3,4 +3,6 @@ language: go
 go:
   - 1.6
 
-install: go get -t ./...
+install:
+  - go get -t ./...
+  - go get github.com/prometheus/client_golang/prometheus
