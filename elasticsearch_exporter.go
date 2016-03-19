@@ -289,6 +289,10 @@ var (
 			help:   "Max file descriptors for process",
 			labels: []string{"cluster", "node"},
 		},
+		"os_mem_used_percent":	   &VecInfo{
+			help:   "Percentage of used memory",
+			labels: []string{"cluster", "node"},
+		},
 		"breakers_estimated_size_bytes": &VecInfo{
 			help:   "Estimated size in bytes of breaker",
 			labels: []string{"cluster", "node", "breaker"},
@@ -594,6 +598,8 @@ func (e *Exporter) CollectNodesStats() {
 		e.counters["process_cpu_time_seconds_sum"].WithLabelValues(allStats.ClusterName, stats.Host, "total").Set(float64(stats.Process.CPU.Total / 1000))
 		e.counters["process_cpu_time_seconds_sum"].WithLabelValues(allStats.ClusterName, stats.Host, "sys").Set(float64(stats.Process.CPU.Sys / 1000))
 		e.counters["process_cpu_time_seconds_sum"].WithLabelValues(allStats.ClusterName, stats.Host, "user").Set(float64(stats.Process.CPU.User / 1000))
+
+		e.gauges["os_mem_used_percent"].WithLabelValues(allStats.ClusterName, stats.Host).Set(float64(stats.OS.Mem.UsedPercent))
 	}
 }
 
