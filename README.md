@@ -1,5 +1,7 @@
 # Elasticsearch Exporter
 
+[![Join the chat at https://gitter.im/f1yegor/elasticsearch_exporter](https://badges.gitter.im/f1yegor/elasticsearch_exporter.svg)](https://gitter.im/f1yegor/elasticsearch_exporter?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+
 Export Elasticsearch service health to Prometheus.
 
 To run it:
