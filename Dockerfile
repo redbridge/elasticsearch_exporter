@@ -1,7 +1,7 @@
 FROM alpine:latest
 
 ENV GOPATH /go
-ENV APPPATH $GOPATH/src/github.com/flecno/elasticsearch_exporter
+ENV APPPATH $GOPATH/src/github.com/redbridge/elasticsearch_exporter
 
 COPY . $APPPATH
 
